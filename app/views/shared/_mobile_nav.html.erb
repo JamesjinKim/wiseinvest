@@ -1,0 +1,21 @@
+<nav class="mobile-nav lg:hidden">
+  <%= link_to dashboard_path, class: "flex-1 flex flex-col items-center justify-center #{current_page?(dashboard_path) || current_page?(root_path) ? 'text-blue-600' : 'text-gray-400'}" do %>
+    <i class="fas fa-home text-xl mb-1"></i>
+    <span class="text-xs font-medium">홈</span>
+  <% end %>
+
+  <%= link_to stocks_path, class: "flex-1 flex flex-col items-center justify-center #{controller_name == 'stocks' ? 'text-blue-600' : 'text-gray-400'}" do %>
+    <i class="fas fa-search text-xl mb-1"></i>
+    <span class="text-xs">분석</span>
+  <% end %>
+
+  <%= link_to investment_records_path, class: "flex-1 flex flex-col items-center justify-center #{controller_name == 'investment_records' ? 'text-blue-600' : 'text-gray-400'}" do %>
+    <i class="fas fa-list text-xl mb-1"></i>
+    <span class="text-xs">기록</span>
+  <% end %>
+
+  <%= link_to profile_path, class: "flex-1 flex flex-col items-center justify-center #{controller_name == 'profiles' ? 'text-blue-600' : 'text-gray-400'}" do %>
+    <i class="fas fa-user text-xl mb-1"></i>
+    <span class="text-xs">프로필</span>
+  <% end %>
+</nav>

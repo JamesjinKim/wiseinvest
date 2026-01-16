@@ -1,0 +1,46 @@
+<div class="fade-in max-w-2xl mx-auto">
+  <!-- Header -->
+  <div class="text-center mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">투자 성향 설문</h1>
+    <p class="text-gray-600">10개의 질문에 답하고 나의 투자 성향을 파악하세요</p>
+  </div>
+
+  <%= form_with url: surveys_path, method: :post, class: "space-y-8" do |form| %>
+    <% @questions.each_with_index do |q, index| %>
+      <div class="card">
+        <div class="flex items-center mb-4">
+          <span class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold mr-3">
+            <%= index + 1 %>
+          </span>
+          <h3 class="text-lg font-semibold text-gray-900"><%= q[:text] %></h3>
+        </div>
+
+        <div class="space-y-3">
+          <% existing = @existing_responses[q[:key]] %>
+          <% 5.times do |i| %>
+            <% value = i + 1 %>
+            <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 transition">
+              <input type="radio" name="responses[<%= q[:key] %>]" value="<%= value %>"
+                     <%= 'checked' if existing&.answer_value == value %>
+                     class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+              <span class="ml-3 text-gray-700">
+                <%= case value
+                    when 1 then "매우 그렇지 않다"
+                    when 2 then "그렇지 않다"
+                    when 3 then "보통이다"
+                    when 4 then "그렇다"
+                    when 5 then "매우 그렇다"
+                    end %>
+              </span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="flex gap-4">
+      <%= link_to "취소", profile_path, class: "btn-outline flex-1" %>
+      <%= form.submit "설문 완료", class: "btn-primary flex-1 cursor-pointer" %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,52 @@
+<aside class="sidebar hidden lg:flex" id="sidebar">
+  <div class="mb-8">
+    <h1 class="text-2xl font-bold text-white">
+      <i class="fas fa-chart-line mr-2"></i>
+      WiseInvest
+    </h1>
+    <p class="text-sm text-gray-300 mt-1">AI 투자 분석 플랫폼</p>
+  </div>
+
+  <nav class="space-y-2 flex-1">
+    <%= link_to dashboard_path, class: "flex items-center p-3 rounded-lg #{current_page?(dashboard_path) || current_page?(root_path) ? 'bg-white/10 text-white font-medium' : 'hover:bg-white/10 text-gray-300 hover:text-white'} transition" do %>
+      <i class="fas fa-home w-5 mr-3"></i>
+      대시보드
+    <% end %>
+
+    <%= link_to stocks_path, class: "flex items-center p-3 rounded-lg #{controller_name == 'stocks' ? 'bg-white/10 text-white font-medium' : 'hover:bg-white/10 text-gray-300 hover:text-white'} transition" do %>
+      <i class="fas fa-search w-5 mr-3"></i>
+      종목 분석
+    <% end %>
+
+    <%= link_to investment_records_path, class: "flex items-center p-3 rounded-lg #{controller_name == 'investment_records' ? 'bg-white/10 text-white font-medium' : 'hover:bg-white/10 text-gray-300 hover:text-white'} transition" do %>
+      <i class="fas fa-list w-5 mr-3"></i>
+      투자 기록
+    <% end %>
+
+    <%= link_to profile_path, class: "flex items-center p-3 rounded-lg #{controller_name == 'profiles' ? 'bg-white/10 text-white font-medium' : 'hover:bg-white/10 text-gray-300 hover:text-white'} transition" do %>
+      <i class="fas fa-chart-bar w-5 mr-3"></i>
+      성향 리포트
+    <% end %>
+
+    <%= link_to surveys_path, class: "flex items-center p-3 rounded-lg #{controller_name == 'surveys' ? 'bg-white/10 text-white font-medium' : 'hover:bg-white/10 text-gray-300 hover:text-white'} transition" do %>
+      <i class="fas fa-clipboard-list w-5 mr-3"></i>
+      투자 설문
+    <% end %>
+  </nav>
+
+  <div class="pt-8 border-t border-white/10">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
+        <i class="fas fa-user text-white"></i>
+      </div>
+      <div>
+        <p class="font-medium text-white"><%= Current.user.name || "투자자" %>님</p>
+        <p class="text-xs text-gray-400"><%= Current.user.email_address %></p>
+      </div>
+    </div>
+    <%= button_to session_path, method: :delete, class: "mt-4 flex items-center text-sm text-gray-400 hover:text-white transition" do %>
+      <i class="fas fa-sign-out-alt mr-2"></i>
+      로그아웃
+    <% end %>
+  </div>
+</aside>

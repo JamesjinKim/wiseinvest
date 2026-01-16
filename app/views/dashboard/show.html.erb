@@ -1,0 +1,180 @@
+<div class="fade-in">
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">대시보드</h1>
+    <p class="text-gray-600">투자 현황을 한눈에 확인하세요</p>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="card slide-up" style="animation-delay: 0.1s">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+          <i class="fas fa-wallet text-blue-600 text-xl"></i>
+        </div>
+        <span class="text-xs text-gray-500">전월 대비</span>
+      </div>
+      <h3 class="text-sm text-gray-600 mb-1">총 투자금</h3>
+      <p class="text-2xl font-bold text-gray-900">
+        <%= number_to_currency(@recent_records.buys.sum { |r| r.price * r.quantity }, unit: '', precision: 0) %>원
+      </p>
+    </div>
+
+    <div class="card slide-up" style="animation-delay: 0.2s">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
+          <i class="fas fa-chart-line text-green-600 text-xl"></i>
+        </div>
+      </div>
+      <h3 class="text-sm text-gray-600 mb-1">총 수익률</h3>
+      <p class="text-2xl font-bold text-green-600">+12.5%</p>
+    </div>
+
+    <div class="card slide-up" style="animation-delay: 0.3s">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
+          <i class="fas fa-trophy text-purple-600 text-xl"></i>
+        </div>
+        <span class="text-xs text-gray-500"><%= @recent_records.count %>건 중</span>
+      </div>
+      <h3 class="text-sm text-gray-600 mb-1">투자 승률</h3>
+      <p class="text-2xl font-bold text-gray-900">73%</p>
+    </div>
+
+    <div class="card slide-up" style="animation-delay: 0.4s">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center">
+          <i class="fas fa-user-check text-orange-600 text-xl"></i>
+        </div>
+        <span class="text-xs text-gray-500">실제 행동 <%= @profile&.actual_score || '-' %>점</span>
+      </div>
+      <h3 class="text-sm text-gray-600 mb-1">투자 성향</h3>
+      <p class="text-2xl font-bold text-gray-900"><%= @profile&.risk_tolerance_label || '미설정' %></p>
+    </div>
+  </div>
+
+  <!-- Two Column Layout -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+    <!-- Recent Analysis -->
+    <div class="lg:col-span-2 card slide-up" style="animation-delay: 0.5s">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-bold text-gray-900">최근 분석 종목</h2>
+        <%= link_to "전체보기 →", stocks_path, class: "text-sm text-blue-600 hover:underline" %>
+      </div>
+
+      <div class="space-y-4">
+        <% @recent_analyses.each do |report| %>
+          <%= link_to stock_path(report.stock), class: "flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition cursor-pointer block" do %>
+            <div class="flex items-center space-x-4">
+              <div class="grade-badge grade-<%= report.grade.downcase %>"><%= report.grade %></div>
+              <div>
+                <h3 class="font-semibold text-gray-900"><%= report.stock.name %></h3>
+                <p class="text-sm text-gray-500"><%= report.stock.symbol %> · 종합 <%= report.total_score %>점</p>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+
+        <% if @recent_analyses.empty? %>
+          <p class="text-gray-500 text-center py-8">아직 분석한 종목이 없습니다.</p>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card slide-up" style="animation-delay: 0.6s">
+      <h2 class="text-xl font-bold text-gray-900 mb-6">빠른 실행</h2>
+
+      <div class="space-y-3">
+        <%= link_to stocks_path, class: "btn-primary w-full justify-between" do %>
+          <span><i class="fas fa-search mr-2"></i>종목 분석</span>
+          <i class="fas fa-arrow-right"></i>
+        <% end %>
+        <%= link_to new_investment_record_path, class: "btn-outline w-full justify-between" do %>
+          <span><i class="fas fa-plus mr-2"></i>투자 기록 추가</span>
+          <i class="fas fa-arrow-right"></i>
+        <% end %>
+        <%= link_to profile_path, class: "btn-outline w-full justify-between" do %>
+          <span><i class="fas fa-chart-bar mr-2"></i>성향 분석</span>
+          <i class="fas fa-arrow-right"></i>
+        <% end %>
+      </div>
+
+      <% if @profile&.biases&.any? %>
+        <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+          <div class="flex items-start space-x-3">
+            <i class="fas fa-lightbulb text-blue-600 mt-1"></i>
+            <div>
+              <h3 class="font-semibold text-blue-900 mb-1">오늘의 조언</h3>
+              <p class="text-sm text-blue-700">
+                <% if @profile.biases["overconfidence"] %>
+                  최근 투자에서 과잉 확신 패턴이 감지되었습니다. 버핏 점수 60점 미만 종목은 재검토하세요.
+                <% else %>
+                  꾸준한 투자 습관을 유지하고 계시네요!
+                <% end %>
+              </p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Recent Investment Records -->
+  <div class="card slide-up" style="animation-delay: 0.7s">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-xl font-bold text-gray-900">최근 투자 기록</h2>
+      <%= link_to "전체보기 →", investment_records_path, class: "text-sm text-blue-600 hover:underline" %>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>날짜</th>
+            <th>종목</th>
+            <th>구분</th>
+            <th class="text-right">수량</th>
+            <th class="text-right">단가</th>
+            <th class="text-center">별점</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @recent_records.each do |record| %>
+            <tr>
+              <td class="text-gray-600"><%= record.traded_at.strftime("%Y-%m-%d") %></td>
+              <td>
+                <div class="font-semibold text-gray-900"><%= record.stock.name %></div>
+                <div class="text-xs text-gray-500"><%= record.stock.symbol %></div>
+              </td>
+              <td>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= record.action == 'buy' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800' %>">
+                  <%= record.action == 'buy' ? '매수' : '매도' %>
+                </span>
+              </td>
+              <td class="text-right text-gray-900"><%= record.quantity %>주</td>
+              <td class="text-right text-gray-900"><%= number_to_currency(record.price, unit: '', precision: 0) %>원</td>
+              <td class="text-center">
+                <% if record.pre_rating %>
+                  <div class="star-rating justify-center">
+                    <% 5.times do |i| %>
+                      <span class="star <%= i < record.pre_rating ? 'active' : '' %>"><%= i < record.pre_rating ? '★' : '☆' %></span>
+                    <% end %>
+                  </div>
+                <% else %>
+                  <span class="text-gray-400">-</span>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+
+          <% if @recent_records.empty? %>
+            <tr>
+              <td colspan="6" class="text-center text-gray-500 py-8">아직 투자 기록이 없습니다.</td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

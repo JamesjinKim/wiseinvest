@@ -1,0 +1,102 @@
+<div class="fade-in">
+  <!-- Back Button -->
+  <div class="mb-6">
+    <%= link_to stocks_path, class: "text-gray-600 hover:text-gray-900 flex items-center" do %>
+      <i class="fas fa-arrow-left mr-2"></i>
+      종목 목록으로
+    <% end %>
+  </div>
+
+  <!-- Stock Header -->
+  <div class="card mb-8">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900"><%= @stock.name %></h1>
+        <p class="text-gray-500"><%= @stock.symbol %> · <%= @stock.sector %></p>
+      </div>
+      <% if @report %>
+        <div class="text-center">
+          <div class="grade-badge grade-<%= @report.grade.downcase %> w-16 h-16 text-2xl mx-auto mb-2"><%= @report.grade %></div>
+          <p class="text-sm text-gray-600">버핏 점수 <span class="font-bold"><%= @report.total_score %>점</span></p>
+        </div>
+      <% end %>
+    </div>
+
+    <%= link_to analyze_stock_path(@stock), class: "btn-primary" do %>
+      <i class="fas fa-sync-alt mr-2"></i>
+      분석 실행
+    <% end %>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Score Breakdown -->
+    <div class="card">
+      <h2 class="text-xl font-bold text-gray-900 mb-6">버핏 스타일 분석</h2>
+
+      <% if @report&.score_breakdown.present? %>
+        <div class="space-y-4">
+          <% criteria = {
+            'roe' => { label: 'ROE (자기자본이익률)', max: 20 },
+            'debt_ratio' => { label: '부채비율', max: 15 },
+            'operating_margin' => { label: '영업이익률', max: 15 },
+            'profit_growth' => { label: '이익 증가 지속성', max: 20 },
+            'per' => { label: 'PER (주가수익비율)', max: 10 },
+            'pbr' => { label: 'PBR (주가순자산비율)', max: 10 },
+            'moat' => { label: '경제적 해자', max: 10 }
+          } %>
+
+          <% criteria.each do |key, info| %>
+            <% score = @report.score_breakdown[key] || 0 %>
+            <div>
+              <div class="flex justify-between text-sm mb-1">
+                <span class="text-gray-600"><%= info[:label] %></span>
+                <span class="font-medium"><%= score %>/<%= info[:max] %></span>
+              </div>
+              <div class="score-bar">
+                <div class="score-bar-fill" style="width: <%= (score.to_f / info[:max] * 100).round %>%"></div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-gray-500 text-center py-8">분석 실행 버튼을 눌러주세요.</p>
+      <% end %>
+    </div>
+
+    <!-- Financial Metrics -->
+    <div class="card">
+      <h2 class="text-xl font-bold text-gray-900 mb-6">재무 지표</h2>
+
+      <% if @metric %>
+        <div class="space-y-4">
+          <div class="flex justify-between py-3 border-b">
+            <span class="text-gray-600">ROE</span>
+            <span class="font-medium"><%= number_to_percentage(@metric.roe, precision: 1) %></span>
+          </div>
+          <div class="flex justify-between py-3 border-b">
+            <span class="text-gray-600">부채비율</span>
+            <span class="font-medium"><%= number_to_percentage(@metric.debt_ratio, precision: 1) %></span>
+          </div>
+          <div class="flex justify-between py-3 border-b">
+            <span class="text-gray-600">영업이익률</span>
+            <span class="font-medium"><%= number_to_percentage(@metric.operating_margin, precision: 1) %></span>
+          </div>
+          <div class="flex justify-between py-3 border-b">
+            <span class="text-gray-600">PER</span>
+            <span class="font-medium"><%= @metric.per %></span>
+          </div>
+          <div class="flex justify-between py-3 border-b">
+            <span class="text-gray-600">PBR</span>
+            <span class="font-medium"><%= @metric.pbr %></span>
+          </div>
+          <div class="flex justify-between py-3">
+            <span class="text-gray-600">연속 이익 증가</span>
+            <span class="font-medium"><%= @metric.profit_growth_years %>년</span>
+          </div>
+        </div>
+      <% else %>
+        <p class="text-gray-500 text-center py-8">재무 데이터가 없습니다.</p>
+      <% end %>
+    </div>
+  </div>
+</div>

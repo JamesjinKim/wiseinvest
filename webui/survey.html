@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>투자 성향 설문 - WiseInvest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold">
+                <i class="fas fa-chart-line mr-2"></i>
+                WiseInvest
+            </h1>
+            <p class="text-sm text-gray-300 mt-1">AI 투자 분석 플랫폼</p>
+        </div>
+        
+        <nav class="space-y-2">
+            <a href="dashboard.html" class="flex items-center p-3 rounded-lg hover:bg-white/10 text-gray-300 hover:text-white transition">
+                <i class="fas fa-home w-5 mr-3"></i>
+                대시보드
+            </a>
+            <a href="stocks.html" class="flex items-center p-3 rounded-lg hover:bg-white/10 text-gray-300 hover:text-white transition">
+                <i class="fas fa-search w-5 mr-3"></i>
+                종목 분석
+            </a>
+            <a href="records.html" class="flex items-center p-3 rounded-lg hover:bg-white/10 text-gray-300 hover:text-white transition">
+                <i class="fas fa-list w-5 mr-3"></i>
+                투자 기록
+            </a>
+            <a href="profile.html" class="flex items-center p-3 rounded-lg hover:bg-white/10 text-gray-300 hover:text-white transition">
+                <i class="fas fa-chart-bar w-5 mr-3"></i>
+                성향 리포트
+            </a>
+            <a href="survey.html" class="flex items-center p-3 rounded-lg bg-white/10 text-white font-medium">
+                <i class="fas fa-clipboard-list w-5 mr-3"></i>
+                투자 설문
+            </a>
+        </nav>
+        
+        <div class="mt-auto pt-8 border-t border-white/10">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
+                    <i class="fas fa-user text-white"></i>
+                </div>
+                <div>
+                    <p class="font-medium text-white">투자자님</p>
+                    <p class="text-xs text-gray-400">investor@wise.com</p>
+                </div>
+            </div>
+            <a href="login.html" class="mt-4 flex items-center text-sm text-gray-400 hover:text-white transition">
+                <i class="fas fa-sign-out-alt mr-2"></i>
+                로그아웃
+            </a>
+        </div>
+    </aside>
+
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+        <button id="menuToggle" class="text-gray-700">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+        <h1 class="text-lg font-bold text-gray-900">투자 설문</h1>
+        <button class="text-gray-700">
+            <i class="fas fa-bell text-xl"></i>
+        </button>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container max-w-4xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-8 fade-in">
+                <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-clipboard-list text-white text-2xl"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">투자 성향 설문</h1>
+                <p class="text-gray-600">10개의 질문에 솔직하게 답변해주세요 (약 3분 소요)</p>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="card mb-8 slide-up">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm font-medium text-gray-700">
+                        진행률: <span id="progressText">0/10</span>
+                    </span>
+                    <span class="text-sm font-medium text-blue-600">
+                        <span id="progressPercent">0</span>%
+                    </span>
+                </div>
+                <div class="progress-bar">
+                    <div id="progressBar" class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Survey Form -->
+            <form id="surveyForm">
+                <!-- Question 1 -->
+                <div class="card mb-6 question-card active" data-question="1">
+                    <div class="mb-6">
+                        <div class="flex items-start space-x-3 mb-4">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-white font-bold">1</span>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-bold text-gray-900 mb-2">
+                                    투자한 종목이 10% 손실을 보고 있습니다. 어떻게 하시겠습니까?
+                                </h3>
+                                <p class="text-sm text-gray-600">투자 손실에 대한 대응 방식을 평가합니다</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <label class="answer-option">
+                            <input type="radio" name="q1" value="1" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">1</span>
+                                <span class="option-text">즉시 손절하고 다른 종목을 찾는다</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q1" value="2" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">2</span>
+                                <span class="option-text">손실이 크지 않으므로 추가 매수한다</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q1" value="3" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">3</span>
+                                <span class="option-text">원금 회복까지 기다린다</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q1" value="4" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">4</span>
+                                <span class="option-text">손실 원인을 분석한 후 결정한다</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q1" value="5" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">5</span>
+                                <span class="option-text">장기 투자 관점으로 추가 매수한다</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="card mb-6 question-card" data-question="2">
+                    <div class="mb-6">
+                        <div class="flex items-start space-x-3 mb-4">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-white font-bold">2</span>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-bold text-gray-900 mb-2">
+                                    투자 결정 시 가장 중요하게 생각하는 것은 무엇입니까?
+                                </h3>
+                                <p class="text-sm text-gray-600">의사결정 우선순위를 파악합니다</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <label class="answer-option">
+                            <input type="radio" name="q2" value="1" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">1</span>
+                                <span class="option-text">빠른 수익 실현 가능성</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q2" value="2" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">2</span>
+                                <span class="option-text">시장 트렌드와 모멘텀</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q2" value="3" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">3</span>
+                                <span class="option-text">수익과 위험의 균형</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q2" value="4" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">4</span>
+                                <span class="option-text">기업의 재무 건전성</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q2" value="5" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">5</span>
+                                <span class="option-text">장기 성장 가능성</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="card mb-6 question-card" data-question="3">
+                    <div class="mb-6">
+                        <div class="flex items-start space-x-3 mb-4">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-white font-bold">3</span>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-bold text-gray-900 mb-2">
+                                    주식을 평균적으로 얼마나 보유하시겠습니까?
+                                </h3>
+                                <p class="text-sm text-gray-600">선호하는 투자 기간을 측정합니다</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <label class="answer-option">
+                            <input type="radio" name="q3" value="1" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">1</span>
+                                <span class="option-text">1주일 이내 (초단타)</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q3" value="2" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">2</span>
+                                <span class="option-text">1개월 이내 (단기)</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q3" value="3" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">3</span>
+                                <span class="option-text">3-6개월 (중기)</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q3" value="4" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">4</span>
+                                <span class="option-text">1-2년 (중장기)</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q3" value="5" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">5</span>
+                                <span class="option-text">3년 이상 (장기)</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="card mb-6 question-card" data-question="4">
+                    <div class="mb-6">
+                        <div class="flex items-start space-x-3 mb-4">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-white font-bold">4</span>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-bold text-gray-900 mb-2">
+                                    한 번의 투자에서 얼마까지 손실을 감수할 수 있습니까?
+                                </h3>
+                                <p class="text-sm text-gray-600">리스크 허용 수준을 평가합니다</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <label class="answer-option">
+                            <input type="radio" name="q4" value="1" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">1</span>
+                                <span class="option-text">원금 손실은 절대 불가</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q4" value="2" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">2</span>
+                                <span class="option-text">최대 5%까지</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q4" value="3" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">3</span>
+                                <span class="option-text">최대 10%까지</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q4" value="4" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">4</span>
+                                <span class="option-text">최대 20%까지</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q4" value="5" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">5</span>
+                                <span class="option-text">30% 이상도 가능</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="card mb-6 question-card" data-question="5">
+                    <div class="mb-6">
+                        <div class="flex items-start space-x-3 mb-4">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-white font-bold">5</span>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-bold text-gray-900 mb-2">
+                                    포트폴리오를 어떻게 구성하시겠습니까?
+                                </h3>
+                                <p class="text-sm text-gray-600">분산 투자 성향을 파악합니다</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <label class="answer-option">
+                            <input type="radio" name="q5" value="1" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">1</span>
+                                <span class="option-text">확신하는 1-2개 종목에 집중</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q5" value="2" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">2</span>
+                                <span class="option-text">3-5개 종목으로 구성</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q5" value="3" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">3</span>
+                                <span class="option-text">6-10개 종목으로 분산</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q5" value="4" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">4</span>
+                                <span class="option-text">10개 이상 광범위하게 분산</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q5" value="5" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">5</span>
+                                <span class="option-text">ETF나 펀드로 자동 분산</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="card mb-6 question-card" data-question="6">
+                    <div class="mb-6">
+                        <div class="flex items-start space-x-3 mb-4">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-white font-bold">6</span>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-bold text-gray-900 mb-2">
+                                    투자 정보를 주로 어디서 얻습니까?
+                                </h3>
+                                <p class="text-sm text-gray-600">정보 활용 방식을 측정합니다</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <label class="answer-option">
+                            <input type="radio" name="q6" value="1" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">1</span>
+                                <span class="option-text">유튜브나 SNS의 추천</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q6" value="2" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">2</span>
+                                <span class="option-text">뉴스와 속보</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q6" value="3" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">3</span>
+                                <span class="option-text">차트 분석</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q6" value="4" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">4</span>
+                                <span class="option-text">재무제표 분석</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q6" value="5" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">5</span>
+                                <span class="option-text">전문가 리포트와 시장 분석</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 7 -->
+                <div class="card mb-6 question-card" data-question="7">
+                    <div class="mb-6">
+                        <div class="flex items-start space-x-3 mb-4">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-white font-bold">7</span>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-bold text-gray-900 mb-2">
+                                    시장이 급락했을 때 어떻게 대응하시겠습니까?
+                                </h3>
+                                <p class="text-sm text-gray-600">위기 대응 능력을 평가합니다</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <label class="answer-option">
+                            <input type="radio" name="q7" value="1" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">1</span>
+                                <span class="option-text">즉시 전량 매도한다</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q7" value="2" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">2</span>
+                                <span class="option-text">일부만 정리하고 지켜본다</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q7" value="3" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">3</span>
+                                <span class="option-text">현 상태를 유지한다</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q7" value="4" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">4</span>
+                                <span class="option-text">좋은 종목을 선별해 추가 매수한다</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q7" value="5" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">5</span>
+                                <span class="option-text">기회로 여기고 적극 매수한다</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 8 -->
+                <div class="card mb-6 question-card" data-question="8">
+                    <div class="mb-6">
+                        <div class="flex items-start space-x-3 mb-4">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-white font-bold">8</span>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-bold text-gray-900 mb-2">
+                                    전체 자산 중 주식 비중은 얼마나 되십니까?
+                                </h3>
+                                <p class="text-sm text-gray-600">자산 배분 성향을 파악합니다</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <label class="answer-option">
+                            <input type="radio" name="q8" value="1" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">1</span>
+                                <span class="option-text">10% 미만</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q8" value="2" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">2</span>
+                                <span class="option-text">10-30%</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q8" value="3" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">3</span>
+                                <span class="option-text">30-50%</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q8" value="4" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">4</span>
+                                <span class="option-text">50-70%</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q8" value="5" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">5</span>
+                                <span class="option-text">70% 이상</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 9 -->
+                <div class="card mb-6 question-card" data-question="9">
+                    <div class="mb-6">
+                        <div class="flex items-start space-x-3 mb-4">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-white font-bold">9</span>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-bold text-gray-900 mb-2">
+                                    매수 결정부터 실제 매수까지 얼마나 걸립니까?
+                                </h3>
+                                <p class="text-sm text-gray-600">의사결정 속도를 측정합니다</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <label class="answer-option">
+                            <input type="radio" name="q9" value="1" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">1</span>
+                                <span class="option-text">즉시 매수</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q9" value="2" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">2</span>
+                                <span class="option-text">몇 시간 내</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q9" value="3" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">3</span>
+                                <span class="option-text">하루 정도</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q9" value="4" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">4</span>
+                                <span class="option-text">2-3일 검토 후</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q9" value="5" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">5</span>
+                                <span class="option-text">1주일 이상 신중히</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 10 -->
+                <div class="card mb-6 question-card" data-question="10">
+                    <div class="mb-6">
+                        <div class="flex items-start space-x-3 mb-4">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-white font-bold">10</span>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-bold text-gray-900 mb-2">
+                                    1년 투자의 목표 수익률은 얼마입니까?
+                                </h3>
+                                <p class="text-sm text-gray-600">수익 기대치를 평가합니다</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <label class="answer-option">
+                            <input type="radio" name="q10" value="1" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">1</span>
+                                <span class="option-text">5% 미만 (안정적)</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q10" value="2" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">2</span>
+                                <span class="option-text">5-10% (보수적)</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q10" value="3" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">3</span>
+                                <span class="option-text">10-20% (균형적)</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q10" value="4" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">4</span>
+                                <span class="option-text">20-30% (공격적)</span>
+                            </div>
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q10" value="5" class="hidden">
+                            <div class="option-content">
+                                <span class="option-number">5</span>
+                                <span class="option-text">30% 이상 (초공격적)</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="flex justify-between items-center mt-8">
+                    <button type="button" id="prevBtn" class="btn btn-outline" disabled>
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        이전
+                    </button>
+                    <div class="text-sm text-gray-600">
+                        <span id="currentQuestion">1</span> / 10
+                    </div>
+                    <button type="button" id="nextBtn" class="btn btn-primary" disabled>
+                        다음
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                    <button type="submit" id="submitBtn" class="btn btn-primary hidden">
+                        <i class="fas fa-check mr-2"></i>
+                        제출하기
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-nav">
+        <a href="dashboard.html" class="flex-1 flex flex-col items-center justify-center text-gray-400">
+            <i class="fas fa-home text-xl mb-1"></i>
+            <span class="text-xs">홈</span>
+        </a>
+        <a href="stocks.html" class="flex-1 flex flex-col items-center justify-center text-gray-400">
+            <i class="fas fa-search text-xl mb-1"></i>
+            <span class="text-xs">분석</span>
+        </a>
+        <a href="records.html" class="flex-1 flex flex-col items-center justify-center text-gray-400">
+            <i class="fas fa-list text-xl mb-1"></i>
+            <span class="text-xs">기록</span>
+        </a>
+        <a href="profile.html" class="flex-1 flex flex-col items-center justify-center text-gray-400">
+            <i class="fas fa-user text-xl mb-1"></i>
+            <span class="text-xs">프로필</span>
+        </a>
+    </nav>
+
+    <script src="js/main.js"></script>
+    <script src="js/survey.js"></script>
+    
+    <style>
+        .question-card {
+            display: none;
+        }
+        .question-card.active {
+            display: block;
+            animation: slideUp 0.4s ease;
+        }
+        .answer-option {
+            display: block;
+            cursor: pointer;
+        }
+        .option-content {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+        }
+        .answer-option:hover .option-content {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+        .answer-option input:checked + .option-content {
+            border-color: #2563eb;
+            background: #dbeafe;
+        }
+        .option-number {
+            display: flex;
+            align-items: center;
+            justify-center;
+            width: 2rem;
+            height: 2rem;
+            background: #e5e7eb;
+            border-radius: 50%;
+            font-weight: 600;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        .answer-option input:checked + .option-content .option-number {
+            background: #2563eb;
+            color: white;
+        }
+        .option-text {
+            flex: 1;
+            font-weight: 500;
+            color: #374151;
+        }
+    </style>
+</body>
+</html>

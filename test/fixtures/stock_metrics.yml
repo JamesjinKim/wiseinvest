@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  stock: one
+  roe: 9.99
+  debt_ratio: 9.99
+  operating_margin: 9.99
+  per: 9.99
+  pbr: 9.99
+  profit_growth_years: 1
+  data_date: 2026-01-16
+
+two:
+  stock: two
+  roe: 9.99
+  debt_ratio: 9.99
+  operating_margin: 9.99
+  per: 9.99
+  pbr: 9.99
+  profit_growth_years: 1
+  data_date: 2026-01-16

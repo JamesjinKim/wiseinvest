@@ -1,0 +1,198 @@
+ko:
+  activerecord:
+    models:
+      user: 사용자
+      stock: 종목
+      stock_metric: 재무지표
+      investment_record: 투자기록
+      investment_profile: 투자성향
+      survey_response: 설문응답
+      analysis_report: 분석리포트
+    attributes:
+      user:
+        email_address: 이메일
+        password: 비밀번호
+        name: 이름
+      stock:
+        symbol: 종목코드
+        name: 종목명
+        sector: 섹터
+      stock_metric:
+        roe: ROE
+        debt_ratio: 부채비율
+        operating_margin: 영업이익률
+        per: PER
+        pbr: PBR
+        profit_growth_years: 이익증가연수
+        data_date: 기준일
+      investment_record:
+        action: 구분
+        quantity: 수량
+        price: 단가
+        traded_at: 거래일시
+        reason_tags: 투자근거
+        pre_rating: 사전별점
+      investment_profile:
+        survey_score: 설문점수
+        actual_score: 실제점수
+        risk_tolerance: 위험성향
+      survey_response:
+        question_key: 질문
+        answer_value: 답변
+      analysis_report:
+        total_score: 종합점수
+        score_breakdown: 세부점수
+        expires_at: 만료일시
+    errors:
+      messages:
+        record_invalid: "유효하지 않은 데이터입니다: %{errors}"
+        restrict_dependent_destroy:
+          has_one: "%{record}이(가) 존재하므로 삭제할 수 없습니다"
+          has_many: "%{record}이(가) 존재하므로 삭제할 수 없습니다"
+
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: 동의해 주세요
+      blank: 입력해 주세요
+      confirmation: 일치하지 않습니다
+      empty: 입력해 주세요
+      equal_to: "%{count}이어야 합니다"
+      even: 짝수여야 합니다
+      exclusion: 사용할 수 없는 값입니다
+      greater_than: "%{count}보다 커야 합니다"
+      greater_than_or_equal_to: "%{count}보다 크거나 같아야 합니다"
+      in: "%{count} 범위 내여야 합니다"
+      inclusion: 올바른 값을 선택해 주세요
+      invalid: 올바르지 않습니다
+      less_than: "%{count}보다 작아야 합니다"
+      less_than_or_equal_to: "%{count}보다 작거나 같아야 합니다"
+      model_invalid: "유효하지 않습니다: %{errors}"
+      not_a_number: 숫자를 입력해 주세요
+      not_an_integer: 정수를 입력해 주세요
+      odd: 홀수여야 합니다
+      other_than: "%{count}와 달라야 합니다"
+      present: 비워야 합니다
+      required: 반드시 입력해 주세요
+      taken: 이미 사용 중입니다
+      too_long: "%{count}자 이하로 입력해 주세요"
+      too_short: "%{count}자 이상으로 입력해 주세요"
+      wrong_length: "%{count}자여야 합니다"
+
+  helpers:
+    select:
+      prompt: 선택해 주세요
+    submit:
+      create: 등록
+      submit: 저장
+      update: 수정
+
+  number:
+    currency:
+      format:
+        delimiter: ","
+        format: "%n%u"
+        precision: 0
+        separator: "."
+        significant: false
+        strip_insignificant_zeros: false
+        unit: 원
+    format:
+      delimiter: ","
+      precision: 2
+      separator: "."
+      significant: false
+      strip_insignificant_zeros: false
+    percentage:
+      format:
+        delimiter: ""
+        format: "%n%"
+
+  date:
+    formats:
+      default: "%Y년 %m월 %d일"
+      short: "%m/%d"
+      long: "%Y년 %m월 %d일 (%a)"
+
+  time:
+    formats:
+      default: "%Y년 %m월 %d일 %H:%M"
+      short: "%m/%d %H:%M"
+      long: "%Y년 %m월 %d일 %H:%M:%S"
+
+  # 앱 전용 번역
+  wiseinvest:
+    app_name: WiseInvest
+    tagline: AI 기반 주식 투자 분석 플랫폼
+
+    navigation:
+      dashboard: 대시보드
+      stocks: 종목 분석
+      records: 투자 기록
+      profile: 성향 리포트
+      survey: 투자 설문
+      logout: 로그아웃
+
+    dashboard:
+      title: 대시보드
+      subtitle: 투자 현황을 한눈에 확인하세요
+      total_investment: 총 투자금
+      total_return: 총 수익률
+      win_rate: 투자 승률
+      investment_style: 투자 성향
+      recent_analysis: 최근 분석 종목
+      recent_records: 최근 투자 기록
+      quick_actions: 빠른 실행
+      todays_advice: 오늘의 조언
+
+    stocks:
+      title: 종목 분석
+      search_placeholder: 종목명 또는 코드 검색
+      buffett_score: 버핏 스타일 점수
+      grade: 등급
+
+    records:
+      title: 투자 기록
+      add_record: 기록 추가
+      csv_upload: CSV 업로드
+      buy: 매수
+      sell: 매도
+
+    profile:
+      title: 나의 투자 성향 리포트
+      survey_score: 설문 기반 점수
+      actual_score: 실제 행동 점수
+      gap_analysis: 인지 부조화 분석
+      detected_biases: 발견된 편향
+      ai_advice: AI 맞춤형 조언
+
+    survey:
+      title: 투자 성향 설문
+      progress: 진행률
+      complete: 설문 완료
+
+    grades:
+      a: A등급 (매우 매력적)
+      b: B등급 (관심 종목)
+      c: C등급 (신중 검토)
+      d: D등급 (투자 비권장)
+
+    risk_tolerance:
+      conservative: 보수적
+      moderate: 중립적
+      aggressive: 공격적
+
+    biases:
+      overconfidence: 과잉 확신
+      loss_aversion: 손실 회피
+      herding: 뇌동 매매
+
+    auth:
+      login: 로그인
+      register: 회원가입
+      email: 이메일
+      password: 비밀번호
+      remember_me: 로그인 상태 유지
+      forgot_password: 비밀번호 찾기
+      no_account: 아직 계정이 없으신가요?
+      have_account: 이미 계정이 있으신가요?

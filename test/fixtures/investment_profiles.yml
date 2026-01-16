@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  survey_score: 1
+  actual_score: 1
+  risk_tolerance: MyString
+
+two:
+  user: two
+  survey_score: 1
+  actual_score: 1
+  risk_tolerance: MyString

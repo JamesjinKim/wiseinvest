@@ -1,0 +1,87 @@
+<div class="fade-in max-w-2xl mx-auto">
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">투자 기록 추가</h1>
+    <p class="text-gray-600">새로운 매수/매도 기록을 추가하세요</p>
+  </div>
+
+  <div class="card">
+    <%= form_with model: @record, url: investment_records_path, class: "space-y-6" do |form| %>
+      <% if @record.errors.any? %>
+        <div class="p-4 bg-red-100 text-red-700 rounded-lg">
+          <ul class="list-disc list-inside">
+            <% @record.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <!-- Stock Selection -->
+      <div>
+        <%= form.label :stock_id, "종목", class: "form-label" %>
+        <%= form.select :stock_id,
+            options_from_collection_for_select(@stocks, :id, :name),
+            { prompt: "종목을 선택하세요" },
+            class: "form-input" %>
+      </div>
+
+      <!-- Action Type -->
+      <div>
+        <%= form.label :action, "구분", class: "form-label" %>
+        <div class="flex gap-4">
+          <label class="flex-1">
+            <%= form.radio_button :action, "buy", class: "hidden peer" %>
+            <span class="block p-4 text-center border-2 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:bg-blue-50 hover:bg-gray-50">
+              <i class="fas fa-arrow-up text-blue-600 mr-2"></i>매수
+            </span>
+          </label>
+          <label class="flex-1">
+            <%= form.radio_button :action, "sell", class: "hidden peer" %>
+            <span class="block p-4 text-center border-2 rounded-lg cursor-pointer peer-checked:border-red-600 peer-checked:bg-red-50 hover:bg-gray-50">
+              <i class="fas fa-arrow-down text-red-600 mr-2"></i>매도
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Quantity and Price -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <%= form.label :quantity, "수량", class: "form-label" %>
+          <%= form.number_field :quantity, min: 1, placeholder: "0", class: "form-input" %>
+        </div>
+        <div>
+          <%= form.label :price, "단가 (원)", class: "form-label" %>
+          <%= form.number_field :price, min: 0, step: 1, placeholder: "0", class: "form-input" %>
+        </div>
+      </div>
+
+      <!-- Traded At -->
+      <div>
+        <%= form.label :traded_at, "거래일시", class: "form-label" %>
+        <%= form.datetime_local_field :traded_at, value: Time.current.strftime("%Y-%m-%dT%H:%M"), class: "form-input" %>
+      </div>
+
+      <!-- Pre Rating -->
+      <div>
+        <%= form.label :pre_rating, "사전 별점 (선택)", class: "form-label" %>
+        <p class="text-sm text-gray-500 mb-2">이 종목에 대한 기대감을 별점으로 평가하세요</p>
+        <div class="flex gap-2">
+          <% 5.times do |i| %>
+            <label class="cursor-pointer">
+              <%= form.radio_button :pre_rating, i + 1, class: "hidden peer" %>
+              <span class="text-3xl text-gray-300 peer-checked:text-yellow-400 hover:text-yellow-400 transition">★</span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex gap-4 pt-4">
+        <%= link_to "취소", investment_records_path, class: "btn-outline flex-1" %>
+        <%= form.submit "저장", class: "btn-primary flex-1 cursor-pointer" %>
+      </div>
+    <% end %>
+  </div>
+</div>

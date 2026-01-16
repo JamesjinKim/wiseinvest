@@ -1,0 +1,112 @@
+<div class="fade-in">
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">나의 투자 성향 리포트</h1>
+    <p class="text-gray-600">설문 결과와 실제 투자 행동을 비교 분석합니다</p>
+  </div>
+
+  <!-- Score Comparison -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+    <div class="card text-center">
+      <div class="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
+        <span class="text-3xl font-bold text-blue-600"><%= @profile&.survey_score || '-' %></span>
+      </div>
+      <h3 class="text-lg font-semibold text-gray-900 mb-1">설문 기반 점수</h3>
+      <p class="text-gray-600">본인이 생각하는 투자 성향</p>
+    </div>
+
+    <div class="card text-center">
+      <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+        <span class="text-3xl font-bold text-green-600"><%= @profile&.actual_score || '-' %></span>
+      </div>
+      <h3 class="text-lg font-semibold text-gray-900 mb-1">실제 행동 점수</h3>
+      <p class="text-gray-600">실제 투자 기록 분석 결과</p>
+    </div>
+
+    <div class="card text-center">
+      <% gap = @profile&.gap %>
+      <div class="w-20 h-20 rounded-full <%= gap && gap > 0 ? 'bg-orange-100' : 'bg-gray-100' %> flex items-center justify-center mx-auto mb-4">
+        <span class="text-3xl font-bold <%= gap && gap > 0 ? 'text-orange-600' : 'text-gray-600' %>">
+          <%= gap ? "#{gap > 0 ? '+' : ''}#{gap}" : '-' %>
+        </span>
+      </div>
+      <h3 class="text-lg font-semibold text-gray-900 mb-1">인지 부조화 갭</h3>
+      <p class="text-gray-600">설문 점수 - 실제 점수</p>
+    </div>
+  </div>
+
+  <!-- Biases Detection -->
+  <% if @profile&.biases&.any? %>
+    <div class="card mb-8">
+      <h2 class="text-xl font-bold text-gray-900 mb-6">
+        <i class="fas fa-exclamation-triangle text-orange-500 mr-2"></i>
+        발견된 투자 편향
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <% if @profile.biases["overconfidence"] %>
+          <div class="p-4 bg-red-50 rounded-lg border border-red-200">
+            <div class="flex items-center mb-2">
+              <i class="fas fa-chart-line text-red-500 mr-2"></i>
+              <h3 class="font-semibold text-red-900">과잉 확신</h3>
+            </div>
+            <p class="text-sm text-red-700">높은 별점(4-5점)을 준 종목 비율이 높습니다. 객관적 지표를 다시 확인하세요.</p>
+          </div>
+        <% end %>
+
+        <% if @profile.biases["loss_aversion"] %>
+          <div class="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+            <div class="flex items-center mb-2">
+              <i class="fas fa-hand-holding-usd text-yellow-500 mr-2"></i>
+              <h3 class="font-semibold text-yellow-900">손실 회피</h3>
+            </div>
+            <p class="text-sm text-yellow-700">매도 비율이 낮습니다. 손절 기준을 세우고 지키세요.</p>
+          </div>
+        <% end %>
+
+        <% if @profile.biases["herding"] %>
+          <div class="p-4 bg-purple-50 rounded-lg border border-purple-200">
+            <div class="flex items-center mb-2">
+              <i class="fas fa-users text-purple-500 mr-2"></i>
+              <h3 class="font-semibold text-purple-900">뇌동 매매</h3>
+            </div>
+            <p class="text-sm text-purple-700">같은 종목을 짧은 기간 반복 거래했습니다. 장기 투자를 고려하세요.</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- AI Advice -->
+  <div class="card mb-8">
+    <h2 class="text-xl font-bold text-gray-900 mb-6">
+      <i class="fas fa-lightbulb text-blue-500 mr-2"></i>
+      AI 맞춤형 조언
+    </h2>
+
+    <div class="space-y-4">
+      <div class="p-4 bg-blue-50 rounded-lg">
+        <h3 class="font-semibold text-blue-900 mb-2">투자 전 체크리스트</h3>
+        <p class="text-blue-700">매수 전 버핏 점수가 60점 이상인지 확인하세요. 점수가 낮은 종목은 재검토가 필요합니다.</p>
+      </div>
+
+      <div class="p-4 bg-green-50 rounded-lg">
+        <h3 class="font-semibold text-green-900 mb-2">분산 투자</h3>
+        <p class="text-green-700">다양한 섹터에 분산 투자하면 리스크를 줄일 수 있습니다.</p>
+      </div>
+
+      <div class="p-4 bg-purple-50 rounded-lg">
+        <h3 class="font-semibold text-purple-900 mb-2">감정 관리</h3>
+        <p class="text-purple-700">투자 결정 시 별점을 기록하고, 나중에 결과와 비교해보세요. 자기 객관화에 도움이 됩니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="flex gap-4">
+    <%= link_to surveys_path, class: "btn-outline" do %>
+      <i class="fas fa-redo mr-2"></i>
+      설문 다시하기
+    <% end %>
+  </div>
+</div>

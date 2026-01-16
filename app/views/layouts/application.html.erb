@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <title><%= content_for(:title) || "WiseInvest - AI 투자 분석" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="WiseInvest">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+  </head>
+
+  <body class="bg-gray-50 font-sans">
+    <% if authenticated? %>
+      <%= render "shared/sidebar" %>
+      <%= render "shared/mobile_header" %>
+
+      <main class="main-content">
+        <div class="container mx-auto px-4 py-6 lg:px-8">
+          <% if notice.present? %>
+            <div class="mb-4 p-4 bg-green-100 text-green-800 rounded-lg flex items-center">
+              <i class="fas fa-check-circle mr-2"></i>
+              <%= notice %>
+            </div>
+          <% end %>
+
+          <% if alert.present? %>
+            <div class="mb-4 p-4 bg-red-100 text-red-800 rounded-lg flex items-center">
+              <i class="fas fa-exclamation-circle mr-2"></i>
+              <%= alert %>
+            </div>
+          <% end %>
+
+          <%= yield %>
+        </div>
+      </main>
+
+      <%= render "shared/mobile_nav" %>
+    <% else %>
+      <%= yield %>
+    <% end %>
+  </body>
+</html>

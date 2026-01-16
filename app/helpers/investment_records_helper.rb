@@ -1,0 +1,2 @@
+module InvestmentRecordsHelper
+end

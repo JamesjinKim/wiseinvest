@@ -1,0 +1,62 @@
+<div class="fade-in">
+  <!-- Back Button -->
+  <div class="mb-6">
+    <%= link_to stock_path(@stock), class: "text-gray-600 hover:text-gray-900 flex items-center" do %>
+      <i class="fas fa-arrow-left mr-2"></i>
+      종목 상세로
+    <% end %>
+  </div>
+
+  <!-- Analysis Result -->
+  <div class="card mb-8 text-center">
+    <h1 class="text-2xl font-bold text-gray-900 mb-4"><%= @stock.name %> 분석 완료</h1>
+
+    <div class="grade-badge grade-<%= @report[:grade].downcase %> w-24 h-24 text-4xl mx-auto mb-4"><%= @report[:grade] %></div>
+
+    <p class="text-3xl font-bold text-gray-900 mb-2"><%= @report[:total_score] %>점</p>
+    <p class="text-gray-600">
+      <% case @report[:grade] %>
+      <% when 'A' %>매우 매력적인 투자 대상입니다<% end %>
+      <% when 'B' %>관심 종목으로 분류됩니다<% end %>
+      <% when 'C' %>신중한 검토가 필요합니다<% end %>
+      <% when 'D' %>투자를 권장하지 않습니다<% end %>
+    </p>
+  </div>
+
+  <!-- Score Details -->
+  <div class="card">
+    <h2 class="text-xl font-bold text-gray-900 mb-6">세부 점수</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <% criteria = {
+        roe: { label: 'ROE', max: 20 },
+        debt_ratio: { label: '부채비율', max: 15 },
+        operating_margin: { label: '영업이익률', max: 15 },
+        profit_growth: { label: '이익 증가', max: 20 },
+        per: { label: 'PER', max: 10 },
+        pbr: { label: 'PBR', max: 10 },
+        moat: { label: '경제적 해자', max: 10 }
+      } %>
+
+      <% criteria.each do |key, info| %>
+        <% score = @report[:breakdown][key] || 0 %>
+        <div>
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-gray-600"><%= info[:label] %></span>
+            <span class="font-bold"><%= score %>/<%= info[:max] %></span>
+          </div>
+          <div class="score-bar h-3">
+            <div class="score-bar-fill" style="width: <%= (score.to_f / info[:max] * 100).round %>%"></div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="mt-8 text-center">
+    <%= link_to stock_path(@stock), class: "btn-primary inline-flex" do %>
+      <i class="fas fa-check mr-2"></i>
+      확인
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+<div class="fade-in max-w-2xl mx-auto">
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">CSV 업로드</h1>
+    <p class="text-gray-600">증권사에서 다운받은 거래내역을 업로드하세요</p>
+  </div>
+
+  <div class="card">
+    <%= form_with url: import_investment_records_path, method: :post, multipart: true, class: "space-y-6" do |form| %>
+      <!-- Drop Zone -->
+      <div class="border-2 border-dashed border-gray-300 rounded-xl p-12 text-center hover:border-blue-500 transition">
+        <i class="fas fa-cloud-upload-alt text-5xl text-gray-400 mb-4"></i>
+        <p class="text-gray-600 mb-4">파일을 여기에 드래그하거나</p>
+        <%= form.file_field :file, accept: ".csv", class: "hidden", id: "csv_file" %>
+        <label for="csv_file" class="btn-primary inline-flex cursor-pointer">
+          <i class="fas fa-folder-open mr-2"></i>
+          파일 선택
+        </label>
+        <p class="text-sm text-gray-500 mt-4">CSV 파일만 업로드 가능합니다</p>
+      </div>
+
+      <!-- CSV Format Guide -->
+      <div class="bg-gray-50 rounded-lg p-6">
+        <h3 class="font-semibold text-gray-900 mb-4">CSV 파일 형식</h3>
+        <div class="overflow-x-auto">
+          <table class="text-sm">
+            <thead>
+              <tr class="text-left">
+                <th class="pr-4 pb-2 text-gray-600">거래일</th>
+                <th class="pr-4 pb-2 text-gray-600">종목코드</th>
+                <th class="pr-4 pb-2 text-gray-600">종목명</th>
+                <th class="pr-4 pb-2 text-gray-600">구분</th>
+                <th class="pr-4 pb-2 text-gray-600">수량</th>
+                <th class="pb-2 text-gray-600">단가</th>
+              </tr>
+            </thead>
+            <tbody class="text-gray-900">
+              <tr>
+                <td class="pr-4">2024-01-15</td>
+                <td class="pr-4">005930</td>
+                <td class="pr-4">삼성전자</td>
+                <td class="pr-4">매수</td>
+                <td class="pr-4">10</td>
+                <td>72000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex gap-4">
+        <%= link_to "취소", investment_records_path, class: "btn-outline flex-1" %>
+        <%= form.submit "업로드", class: "btn-primary flex-1 cursor-pointer" %>
+      </div>
+    <% end %>
+  </div>
+</div>
