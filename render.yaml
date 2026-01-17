@@ -1,0 +1,29 @@
+# Render Blueprint - Infrastructure as Code
+# https://docs.render.com/blueprint-spec
+
+databases:
+  - name: wiseinvest-db
+    plan: free # 무료 90일, 이후 starter $7/월
+    databaseName: wiseinvest_production
+    user: wiseinvest
+
+services:
+  - type: web
+    name: wiseinvest
+    runtime: docker
+    plan: free # 무료 (750시간/월), starter $7/월 권장
+    region: singapore # 한국에서 가장 가까운 리전
+    healthCheckPath: /up
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: wiseinvest-db
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false # Render 대시보드에서 수동 설정 필요
+      - key: RAILS_ENV
+        value: production
+      - key: RAILS_LOG_TO_STDOUT
+        value: "true"
+      - key: RAILS_SERVE_STATIC_FILES
+        value: "true"
