@@ -7,8 +7,12 @@ class SessionsController < ApplicationController
 
   def create
     if user = User.authenticate_by(params.permit(:email_address, :password))
-      start_new_session_for user
-      redirect_to after_authentication_url
+      if user.suspended?
+        redirect_to new_session_path, alert: "계정이 정지되었습니다. 관리자에게 문의하세요."
+      else
+        start_new_session_for user
+        redirect_to after_authentication_url
+      end
     else
       redirect_to new_session_path, alert: "Try another email address or password."
     end

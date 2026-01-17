@@ -1,0 +1,101 @@
+<div class="fade-in">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">사용자 관리</h1>
+      <p class="text-gray-600">총 <%= @total_count %>명의 사용자가 등록되어 있습니다</p>
+    </div>
+  </div>
+
+  <!-- Users Table -->
+  <div class="card">
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>사용자</th>
+            <th>가입일</th>
+            <th class="text-center">권한</th>
+            <th class="text-center">상태</th>
+            <th class="text-center">관리</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @users.each do |user| %>
+            <tr>
+              <td>
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center mr-3">
+                    <i class="fas fa-user text-white"></i>
+                  </div>
+                  <div>
+                    <div class="font-semibold text-gray-900"><%= user.name || "이름 없음" %></div>
+                    <div class="text-sm text-gray-500"><%= user.email_address %></div>
+                  </div>
+                </div>
+              </td>
+              <td class="text-gray-600"><%= user.created_at.strftime("%Y-%m-%d") %></td>
+              <td class="text-center">
+                <% if user.admin? %>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                    <i class="fas fa-shield-alt mr-1"></i>관리자
+                  </span>
+                <% else %>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                    일반 사용자
+                  </span>
+                <% end %>
+              </td>
+              <td class="text-center">
+                <% if user.suspended? %>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                    <i class="fas fa-ban mr-1"></i>정지됨
+                  </span>
+                <% else %>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    <i class="fas fa-check mr-1"></i>활성
+                  </span>
+                <% end %>
+              </td>
+              <td class="text-center">
+                <%= link_to admin_user_path(user), class: "text-blue-600 hover:text-blue-800" do %>
+                  <i class="fas fa-eye"></i> 상세
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+
+          <% if @users.empty? %>
+            <tr>
+              <td colspan="5" class="text-center text-gray-500 py-12">
+                <i class="fas fa-users text-4xl text-gray-300 mb-4 block"></i>
+                사용자가 없습니다.
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <% if @total_pages > 1 %>
+      <div class="flex justify-center mt-6 space-x-2">
+        <% if @page > 1 %>
+          <%= link_to admin_users_path(page: @page - 1), class: "px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200" do %>
+            <i class="fas fa-chevron-left"></i>
+          <% end %>
+        <% end %>
+
+        <% (1..@total_pages).each do |page_num| %>
+          <%= link_to page_num, admin_users_path(page: page_num), class: "px-4 py-2 rounded-lg #{page_num == @page ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}" %>
+        <% end %>
+
+        <% if @page < @total_pages %>
+          <%= link_to admin_users_path(page: @page + 1), class: "px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200" do %>
+            <i class="fas fa-chevron-right"></i>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -4,6 +4,17 @@ Rails.application.routes.draw do
   resources :passwords, param: :token
   resource :registration, only: [ :new, :create ]
 
+  # 관리자
+  namespace :admin do
+    root "users#index"
+    resources :users, only: [ :index, :show, :update ] do
+      member do
+        patch :suspend
+        patch :unsuspend
+      end
+    end
+  end
+
   # 대시보드 (루트)
   root "dashboard#show"
   get "dashboard", to: "dashboard#show", as: :dashboard

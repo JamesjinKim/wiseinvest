@@ -2,12 +2,18 @@
 
 one:
   user: one
-  survey_score: 1
-  actual_score: 1
-  risk_tolerance: MyString
+  survey_score: 75
+  actual_score: 60
+  risk_tolerance: moderate
 
 two:
   user: two
-  survey_score: 1
-  actual_score: 1
-  risk_tolerance: MyString
+  survey_score: 45
+  actual_score: 80
+  risk_tolerance: conservative
+
+suspended:
+  user: suspended
+  survey_score: 50
+  actual_score: 50
+  risk_tolerance: moderate

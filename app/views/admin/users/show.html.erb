@@ -1,0 +1,125 @@
+<div class="fade-in">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-8">
+    <div class="flex items-center">
+      <%= link_to admin_users_path, class: "text-gray-500 hover:text-gray-700 mr-4" do %>
+        <i class="fas fa-arrow-left"></i>
+      <% end %>
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">사용자 상세</h1>
+        <p class="text-gray-600"><%= @user.email_address %></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- User Info Card -->
+    <div class="card">
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">기본 정보</h2>
+      <div class="space-y-4">
+        <div class="flex items-center">
+          <div class="w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center mr-4">
+            <i class="fas fa-user text-white text-2xl"></i>
+          </div>
+          <div>
+            <div class="font-semibold text-gray-900 text-lg"><%= @user.name || "이름 없음" %></div>
+            <div class="text-gray-500"><%= @user.email_address %></div>
+          </div>
+        </div>
+
+        <div class="border-t pt-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <div class="text-sm text-gray-500">가입일</div>
+              <div class="font-medium text-gray-900"><%= @user.created_at.strftime("%Y년 %m월 %d일") %></div>
+            </div>
+            <div>
+              <div class="text-sm text-gray-500">투자 기록</div>
+              <div class="font-medium text-gray-900"><%= @user.investment_records.count %>건</div>
+            </div>
+            <div>
+              <div class="text-sm text-gray-500">설문 응답</div>
+              <div class="font-medium text-gray-900"><%= @user.survey_responses.count %>건</div>
+            </div>
+            <div>
+              <div class="text-sm text-gray-500">마지막 로그인</div>
+              <div class="font-medium text-gray-900">
+                <% if @user.sessions.order(created_at: :desc).first %>
+                  <%= @user.sessions.order(created_at: :desc).first.created_at.strftime("%Y-%m-%d %H:%M") %>
+                <% else %>
+                  -
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions Card -->
+    <div class="card">
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">권한 관리</h2>
+
+      <!-- Current Status -->
+      <div class="space-y-4 mb-6">
+        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+          <span class="text-gray-700">현재 권한</span>
+          <% if @user.admin? %>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
+              <i class="fas fa-shield-alt mr-1"></i>관리자
+            </span>
+          <% else %>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+              일반 사용자
+            </span>
+          <% end %>
+        </div>
+
+        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+          <span class="text-gray-700">계정 상태</span>
+          <% if @user.suspended? %>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+              <i class="fas fa-ban mr-1"></i>정지됨 (<%= @user.suspended_at.strftime("%Y-%m-%d") %>)
+            </span>
+          <% else %>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+              <i class="fas fa-check mr-1"></i>활성
+            </span>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="space-y-3">
+        <% if @user != Current.user %>
+          <!-- Toggle Admin -->
+          <% if @user.admin? %>
+            <%= button_to admin_user_path(@user, is_admin: false), method: :patch, class: "w-full btn-outline flex items-center justify-center", data: { turbo_confirm: "이 사용자의 관리자 권한을 해제하시겠습니까?" } do %>
+              <i class="fas fa-user-minus mr-2"></i>관리자 권한 해제
+            <% end %>
+          <% else %>
+            <%= button_to admin_user_path(@user, is_admin: true), method: :patch, class: "w-full btn-primary flex items-center justify-center", data: { turbo_confirm: "이 사용자에게 관리자 권한을 부여하시겠습니까?" } do %>
+              <i class="fas fa-user-shield mr-2"></i>관리자 권한 부여
+            <% end %>
+          <% end %>
+
+          <!-- Suspend/Unsuspend -->
+          <% if @user.suspended? %>
+            <%= button_to unsuspend_admin_user_path(@user), method: :patch, class: "w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center transition", data: { turbo_confirm: "이 계정을 활성화하시겠습니까?" } do %>
+              <i class="fas fa-check-circle mr-2"></i>계정 활성화
+            <% end %>
+          <% else %>
+            <%= button_to suspend_admin_user_path(@user), method: :patch, class: "w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center transition", data: { turbo_confirm: "이 계정을 정지하시겠습니까? 정지된 계정은 로그인할 수 없습니다." } do %>
+              <i class="fas fa-ban mr-2"></i>계정 정지
+            <% end %>
+          <% end %>
+        <% else %>
+          <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-center">
+            <i class="fas fa-info-circle text-yellow-600 mr-2"></i>
+            <span class="text-yellow-800">자기 자신의 권한은 변경할 수 없습니다.</span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

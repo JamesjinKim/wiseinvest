@@ -2,10 +2,10 @@
 
 one:
   user: one
-  question_key: MyString
-  answer_value: 1
+  question_key: risk_tolerance
+  answer_value: 4
 
 two:
   user: two
-  question_key: MyString
-  answer_value: 1
+  question_key: investment_horizon
+  answer_value: 3

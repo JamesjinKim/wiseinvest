@@ -2,10 +2,12 @@
 
 one:
   stock: one
-  total_score: 1
-  expires_at: 2026-01-16 11:16:25
+  total_score: 85
+  expires_at: 2026-01-20 00:00:00
+  score_breakdown: { roe: 20, debt_ratio: 15, operating_margin: 15, profit_growth: 20, per: 10, pbr: 5 }
 
 two:
   stock: two
-  total_score: 1
-  expires_at: 2026-01-16 11:16:25
+  total_score: 72
+  expires_at: 2026-01-20 00:00:00
+  score_breakdown: { roe: 20, debt_ratio: 12, operating_margin: 12, profit_growth: 15, per: 8, pbr: 5 }
